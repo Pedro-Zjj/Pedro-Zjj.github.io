@@ -25,6 +25,15 @@
 
 本项目使用 GitHub Actions 自动部署到 GitHub Pages。
 
+## 开发工具
+
+本项目借助以下 AI 工具和技术完成：
+
+- **Trae SOLO** - AI 驱动的开发环境
+- **Kimi-K2.5** - AI 大语言模型
+- **GLM-4.7** - AI 大语言模型
+- **MiniMax-M2.1** - AI 大语言模型
+
 ## 许可证
 
 MIT License
