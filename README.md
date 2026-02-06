@@ -31,5 +31,5 @@ MIT License
 
 ---
 
-**作者**: 张佳俊  
-**GitHub**: [pedro-zjj](https://github.com/pedro-zjj)
+**作者**: Pedro-Zjj  
+**GitHub**: [Pedro-Zjj](https://github.com/Pedro-Zjj)
