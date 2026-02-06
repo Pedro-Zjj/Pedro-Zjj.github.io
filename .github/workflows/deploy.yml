@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: 敬请期待
 
 on:
   push:
@@ -19,21 +19,21 @@ concurrency:
 jobs:
   deploy:
     environment:
-      name: github-pages
+      name: 暂未更新
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 敬请期待
         uses: actions/checkout@v4
       
-      - name: Setup Pages
+      - name: 敬请期待
         uses: actions/configure-pages@v5
       
-      - name: Upload artifact
+      - name: 敬请期待
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
       
-      - name: Deploy to GitHub Pages
+      - name: 敬请期待
         id: deployment
         uses: actions/deploy-pages@v4
