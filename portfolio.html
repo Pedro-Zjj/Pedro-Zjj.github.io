@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品集 | 个人作品集</title>
+  <meta name="description" content="我的设计作品和创意项目展示">
+  <meta name="theme-color" content="#0d1b2a">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,wght@0,400;0,500;0,700;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Portfolio<span>.</span></a>
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-wrapper">
+        <ul class="nav-links">
+          <li><a href="index.html">我的主页</a></li>
+          <li><a href="projects.html">项目经历</a></li>
+          <li><a href="work-experience.html">工作经历</a></li>
+          <li><a href="papers.html">论文发表</a></li>
+          <li><a href="blog.html">博客文章</a></li>
+          <li><a href="portfolio.html" class="active">作品集</a></li>
+        </ul>
+        <!-- Language Toggle Button -->
+        <button class="lang-btn" id="lang-toggle" aria-label="切换语言" title="切换语言">
+          <span class="lang-current">中</span>
+        </button>
+        <!-- Theme Toggle Button -->
+        <button class="theme-btn" aria-label="切换主题" title="切换主题">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <section class="section">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="section-header">
+          <p class="section-label">Portfolio</p>
+          <h1 class="section-title">作品集</h1>
+          <p class="section-desc">我的设计作品和创意项目展示</p>
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="cards-grid" id="portfolio-grid">
+          <!-- Work 1 -->
+          <article class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800" alt="品牌视觉设计">
+            </div>
+            <div class="card-content">
+              <div class="card-meta">
+                <span><i class="far fa-calendar"></i> 2024-01</span>
+                <span><i class="fas fa-palette"></i> 品牌设计</span>
+              </div>
+              <h3 class="card-title">
+                <a href="#">品牌视觉设计</a>
+              </h3>
+              <p class="card-excerpt">为科技初创公司打造的完整品牌视觉识别系统，包括Logo设计、色彩系统和应用规范。</p>
+              <div class="card-tags">
+                <span class="tag">品牌设计</span>
+                <span class="tag">视觉识别</span>
+                <span class="tag">Logo设计</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Work 2 -->
+          <article class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800" alt="移动应用UI设计">
+            </div>
+            <div class="card-content">
+              <div class="card-meta">
+                <span><i class="far fa-calendar"></i> 2023-10</span>
+                <span><i class="fas fa-mobile-alt"></i> UI设计</span>
+              </div>
+              <h3 class="card-title">
+                <a href="#">移动应用UI设计</a>
+              </h3>
+              <p class="card-excerpt">为一款健身追踪应用设计的完整UI界面，包含30+个页面，兼顾美观性和功能性。</p>
+              <div class="card-tags">
+                <span class="tag">UI设计</span>
+                <span class="tag">移动端</span>
+                <span class="tag">健身应用</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Work 3 -->
+          <article class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800" alt="数据可视化大屏设计">
+            </div>
+            <div class="card-content">
+              <div class="card-meta">
+                <span><i class="far fa-calendar"></i> 2023-08</span>
+                <span><i class="fas fa-chart-line"></i> 数据可视化</span>
+              </div>
+              <h3 class="card-title">
+                <a href="#">数据可视化大屏设计</a>
+              </h3>
+              <p class="card-excerpt">为智慧园区项目设计的数据可视化大屏，展示园区实时运营数据，采用科技蓝主色调。</p>
+              <div class="card-tags">
+                <span class="tag">数据可视化</span>
+                <span class="tag">大屏设计</span>
+                <span class="tag">智慧园区</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Brand & Description -->
+        <div>
+          <div class="footer-brand">Portfolio<span>.</span></div>
+          <p class="footer-desc">行政管理与汉语国际教育双学位背景，专注于跨学科研究与教育实践。</p>
+          <div class="social-links">
+            <a href="https://github.com/pedro-zjj" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="mailto:zhujunjie_2620@foxmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Smart Scroll Button -->
+  <button id="smart-scroll-btn" class="scroll-btn" title="快速导航">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="assets/js/main.js?v=5"></script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>论文详情 | 个人作品集</title>
+  <meta name="description" content="论文详细信息">
+  <meta name="theme-color" content="#0d1b2a">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,wght@0,400;0,500;0,700;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Markdown Parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    /* Detail Page Layout */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .detail-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    /* Sidebar Navigation */
+    .detail-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 1024px) {
+      .detail-sidebar {
+        position: relative;
+        top: 0;
+        order: 2;
+      }
+    }
+
+    .sidebar-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .toc-link:hover {
+      color: var(--accent);
+      background: var(--bg-tertiary);
+      border-left-color: var(--accent);
+    }
+
+    .toc-link.active {
+      color: var(--accent);
+      background: var(--accent-subtle);
+      border-left-color: var(--accent);
+      font-weight: 500;
+    }
+
+    .toc-link.h2 {
+      padding-left: 0.75rem;
+    }
+
+    .toc-link.h3 {
+      padding-left: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    /* Main Content */
+    .detail-main {
+      min-width: 0;
+    }
+
+    /* Enhanced Markdown Content */
+    .markdown-content {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .markdown-content h1,
+    .markdown-content h2,
+    .markdown-content h3,
+    .markdown-content h4 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      scroll-margin-top: 100px;
+    }
+
+    .markdown-content h1 {
+      font-size: 2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .markdown-content h2 {
+      font-size: 1.6rem;
+      color: var(--accent);
+    }
+
+    .markdown-content h3 {
+      font-size: 1.3rem;
+    }
+
+    .markdown-content p {
+      margin-bottom: 1.25rem;
+    }
+
+    .markdown-content ul,
+    .markdown-content ol {
+      margin-bottom: 1.25rem;
+      padding-left: 1.5rem;
+    }
+
+    .markdown-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .markdown-content code {
+      background: var(--bg-tertiary);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9em;
+      color: var(--accent);
+    }
+
+    .markdown-content pre {
+      background: var(--bg-tertiary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .markdown-content pre code {
+      background: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .markdown-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .markdown-content img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+    }
+
+    .markdown-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    .markdown-content th,
+    .markdown-content td {
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .markdown-content th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+    }
+
+    /* Navigation Buttons */
+    .detail-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .nav-btn.prev {
+      align-items: flex-start;
+    }
+
+    .nav-btn.next {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .nav-btn.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .nav-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-title {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Article Header */
+    .article-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .article-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .article-info {
+      display: flex;
+      gap: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error State */
+    .error-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .error-icon {
+      font-size: 4rem;
+      color: var(--error);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Portfolio<span>.</span></a>
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-wrapper">
+        <ul class="nav-links">
+          <li><a href="index.html">我的主页</a></li>
+          <li><a href="projects.html">项目经历</a></li>
+          <li><a href="work-experience.html">工作经历</a></li>
+          <li><a href="papers.html" class="active">论文发表</a></li>
+          <li><a href="blog.html">博客文章</a></li>
+          <li><a href="portfolio.html">作品集</a></li>
+        </ul>
+        <button class="lang-btn" id="lang-toggle" aria-label="切换语言">
+          <span class="lang-current">中</span>
+        </button>
+        <button class="theme-btn" aria-label="切换主题">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main style="padding-top: 100px; padding-bottom: 4rem;">
+    <!-- Back Button -->
+    <div class="container" style="margin-bottom: 2rem;">
+      <a href="papers.html" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-arrow-left"></i> 返回论文列表
+      </a>
+    </div>
+
+    <div class="detail-layout">
+      <!-- Sidebar TOC -->
+      <aside class="detail-sidebar">
+        <div class="sidebar-title">目录导航</div>
+        <nav id="toc-nav">
+          <ul class="toc-list" id="toc-list">
+            <!-- TOC will be generated dynamically -->
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <article class="detail-main" id="paper-content">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p style="color: var(--text-secondary);">正在加载内容...</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="container" style="margin-top: 3rem;">
+      <div class="detail-nav" id="detail-nav">
+        <!-- Navigation buttons will be generated dynamically -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Brand & Description -->
+        <div>
+          <div class="footer-brand">Portfolio<span>.</span></div>
+          <p class="footer-desc">行政管理与汉语国际教育双学位背景，专注于跨学科研究与教育实践。</p>
+          <div class="social-links">
+            <a href="https://github.com/pedro-zjj" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="mailto:zhujunjie_2620@foxmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Smart Scroll Button -->
+  <button id="smart-scroll-btn" class="scroll-btn" title="快速导航">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="assets/js/main.js?v=5"></script>
+  <script>
+    // Paper list for navigation
+    const paperList = ['paper-1', 'paper-2'];
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug') || 'paper-1';
+      
+      // Find current index
+      const currentIndex = paperList.indexOf(slug);
+      
+      fetch(`content/papers/${slug}.md`)
+        .then(response => {
+          if (!response.ok) throw new Error('Paper not found');
+          return response.text();
+        })
+        .then(markdown => {
+          const { frontmatter, content } = parseFrontmatter(markdown);
+          const htmlContent = marked.parse(content);
+          
+          document.title = `${frontmatter.title || '论文详情'} | 个人作品集`;
+          
+          // Render content
+          const container = document.getElementById('paper-content');
+          container.innerHTML = `
+            <header class="article-header">
+              <div class="article-meta">
+                ${frontmatter.tags ? frontmatter.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                ${frontmatter.level ? `<span class="tag" style="background: var(--accent);">${frontmatter.level}</span>` : ''}
+              </div>
+              <h1 class="article-title">${frontmatter.title || '论文标题'}</h1>
+              <div class="article-info">
+                <span><i class="far fa-calendar"></i> ${frontmatter.year || ''}</span>
+                <span><i class="fas fa-university"></i> ${frontmatter.venue || ''}</span>
+                <span><i class="fas fa-user"></i> ${frontmatter.authors || ''}</span>
+              </div>
+            </header>
+            <div class="markdown-content" id="markdown-body">
+              ${htmlContent}
+            </div>
+          `;
+          
+          // Generate TOC
+          generateTOC();
+          
+          // Generate navigation buttons
+          generateNavButtons(currentIndex);
+          
+          // Setup scroll spy
+          setupScrollSpy();
+        })
+        .catch(error => {
+          document.getElementById('paper-content').innerHTML = `
+            <div class="error-state">
+              <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+              <h2>论文未找到</h2>
+              <p style="color: var(--text-secondary);">抱歉，无法加载该论文的内容。</p>
+              <a href="papers.html" class="btn btn-primary" style="margin-top: 1rem;">返回论文列表</a>
+            </div>
+          `;
+        });
+    });
+    
+    function generateTOC() {
+      const markdownBody = document.getElementById('markdown-body');
+      if (!markdownBody) return;
+      
+      const headings = markdownBody.querySelectorAll('h2, h3');
+      const tocList = document.getElementById('toc-list');
+      
+      if (headings.length === 0) {
+        tocList.innerHTML = '<li class="toc-item"><span style="color: var(--text-muted); font-size: 0.9rem;">暂无目录</span></li>';
+        return;
+      }
+      
+      tocList.innerHTML = '';
+      headings.forEach((heading, index) => {
+        const id = `section-${index}`;
+        heading.id = id;
+        
+        const li = document.createElement('li');
+        li.className = 'toc-item';
+        li.innerHTML = `
+          <a href="#${id}" class="toc-link ${heading.tagName.toLowerCase()}">
+            ${heading.textContent}
+          </a>
+        `;
+        tocList.appendChild(li);
+      });
+    }
+    
+    function generateNavButtons(currentIndex) {
+      const navContainer = document.getElementById('detail-nav');
+      
+      let prevBtn = '';
+      let nextBtn = '';
+      
+      if (currentIndex > 0) {
+        const prevSlug = paperList[currentIndex - 1];
+        prevBtn = `
+          <a href="paper-detail.html?slug=${prevSlug}" class="nav-btn prev">
+            <span class="nav-label"><i class="fas fa-arrow-left"></i> 上一篇</span>
+            <span class="nav-title">${getPaperTitle(prevSlug)}</span>
+          </a>
+        `;
+      } else {
+        prevBtn = `
+          <div class="nav-btn prev disabled">
+            <span class="nav-label"><i class="fas fa-arrow-left"></i> 上一篇</span>
+            <span class="nav-title">没有了</span>
+          </div>
+        `;
+      }
+      
+      if (currentIndex < paperList.length - 1) {
+        const nextSlug = paperList[currentIndex + 1];
+        nextBtn = `
+          <a href="paper-detail.html?slug=${nextSlug}" class="nav-btn next">
+            <span class="nav-label">下一篇 <i class="fas fa-arrow-right"></i></span>
+            <span class="nav-title">${getPaperTitle(nextSlug)}</span>
+          </a>
+        `;
+      } else {
+        nextBtn = `
+          <div class="nav-btn next disabled">
+            <span class="nav-label">下一篇 <i class="fas fa-arrow-right"></i></span>
+            <span class="nav-title">没有了</span>
+          </div>
+        `;
+      }
+      
+      navContainer.innerHTML = prevBtn + nextBtn;
+    }
+    
+    function getPaperTitle(slug) {
+      const titles = {
+        'paper-1': '基于Transformer的代码生成模型研究',
+        'paper-2': '面向代码审查的自动化缺陷检测方法'
+      };
+      return titles[slug] || slug;
+    }
+    
+    function setupScrollSpy() {
+      const headings = document.querySelectorAll('.markdown-content h2, .markdown-content h3');
+      const tocLinks = document.querySelectorAll('.toc-link');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-100px 0px -60% 0px' });
+      
+      headings.forEach(heading => observer.observe(heading));
+    }
+    
+    function parseFrontmatter(markdown) {
+      const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+      const match = markdown.match(frontmatterRegex);
+      
+      if (!match) return { frontmatter: {}, content: markdown };
+      
+      const frontmatterText = match[1];
+      const content = match[2];
+      const frontmatter = {};
+      
+      frontmatterText.split('\n').forEach(line => {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex > 0) {
+          const key = line.substring(0, colonIndex).trim();
+          let value = line.substring(colonIndex + 1).trim();
+          
+          if (value.startsWith('[') && value.endsWith(']')) {
+            value = value.slice(1, -1).split(',').map(v => v.trim().replace(/["']/g, ''));
+          } else {
+            value = value.replace(/["']/g, '');
+          }
+          
+          frontmatter[key] = value;
+        }
+      });
+      
+      return { frontmatter, content };
+    }
+  </script>
+</body>
+</html>
